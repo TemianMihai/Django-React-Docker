@@ -158,8 +158,8 @@ At this point, your Django app should be running at port 8000 on your Docker hos
       version: '3.7'
 
       services:
-        sample:
-          container_name: sample
+        reactdocker:
+          container_name: reactdocker
           build:
             context: .
             dockerfile: Dockerfile
