@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  db:
+  db_postgres:
     image: postgres
     hostname: postgres
     environment:
@@ -10,7 +10,7 @@ services:
       - POSTGRES_PASSWORD=postgres
     ports:
       - "5432:5432"
-  web:
+  web_django:
     build: .
     command: >
       sh -c "python manage.py migrate &&
@@ -21,6 +21,6 @@ services:
     ports:
     - "8000:8000"
     depends_on:
-      - db
+      - db_postgres
     environment:
       WAIT_HOSTS: postgres:5432,
