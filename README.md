@@ -1,4 +1,4 @@
-# Django-React-Docker
+# Django-React-Docker :snake: :gift: :whale:
 
 This repo is a basic structure for projects where Django is used for backend, React for fronted, Postgres as DB and Docker for build. In this repo I've created 2 containers, one for backend and the other one for frontend and also setting up the Django for delivering APIs.
 
