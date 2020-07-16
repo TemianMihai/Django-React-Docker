@@ -4,21 +4,25 @@ This repo is a basic structure for projects where Django is used for backend, Re
 
 ### Step 1: Create an empty project directory and inside it, 2 more folders: backend and frontend.
 
-### Step 2: Inside 'backend' folder create Dockerfile
+### Step 2: Inside 'backend' folder create a Dockerfile and add:
 
-      ```dockerfile
       FROM python:3.8.3-alpine
+      
       ENV PYTHONUNBUFFERED 1
+      
       RUN mkdir /code
+      
       WORKDIR /code
+      
       COPY requirements.txt /code/
+      
       RUN \
        apk add --no-cache postgresql-libs && \
        apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev && \
        python3 -m pip install -r requirements.txt --no-cache-dir && \
        apk --purge del .build-deps
+       
       COPY . /code/
-      ```
       
 ### Step 3: Inside 'backend' folder create requirements.txt and add:
 
@@ -30,9 +34,10 @@ This repo is a basic structure for projects where Django is used for backend, Re
 
 ### Step 4: Inside 'backend' folder create docker-compose.yml and add:
 
-      ```dockerfile
       version: '3'
+      
       services:
+      
         db_postgres:
           image: postgres
           hostname: postgres
@@ -42,6 +47,7 @@ This repo is a basic structure for projects where Django is used for backend, Re
             - POSTGRES_PASSWORD=postgres
           ports:
             - "5432:5432"
+            
         web_django:
           build: .
           command: >
@@ -51,12 +57,11 @@ This repo is a basic structure for projects where Django is used for backend, Re
           volumes:
             - .:/code
           ports:
-          - "8000:8000"
+            - "8000:8000"
           depends_on:
             - db_postgres
           environment:
             WAIT_HOSTS: postgres:5432,
-       ```
        
 ### Step 5: Inside 'backend' folder create your django project:
 
@@ -64,7 +69,6 @@ This repo is a basic structure for projects where Django is used for backend, Re
     
 ### Step 6: In your project directory, edit the djangodocker/setting.py:
 
-    ```python
     # setting.py 
     
     # Replace DATABASES with: 
@@ -96,13 +100,12 @@ This repo is a basic structure for projects where Django is used for backend, Re
     # Edit ALLOWED_HOSTS
     
     ALLOWED_HOSTS = ['*']
-    ```
     
- ### Step 7: Build the container (make sure you're in the right directory)
+ ### Step 7: Build the container (make sure you're in the right directory):
   
     $ docker build -t django-backend .
     
-### Step 8: Run your app (make sure you're in the right directory)
+### Step 8: Run your app (make sure you're in the right directory):
 
     $ docker-compose up
     
@@ -112,18 +115,17 @@ At this point, your Django app should be running at port 8000 on your Docker hos
 
 ### Step 9: Create the react app inside 'frontend' folder
 
-   ### a) Install react globally
+   ### a) Install react globally:
       
       $ npm install -g create-react-app@3.4.1
       
-   ### b) Generate new app
+   ### b) Generate new app:
    
       $ npm init react-app reactdocker --use-npm
       $ cd reactdocker
       
-   ### c) Create a Dockerfile (make sure you're in 'reactdocker' folder)
+   ### c) Create a Dockerfile (make sure you're in 'reactdocker' folder):
    
-      ```dockerfile
       FROM node:13.12.0-alpine
 
       WORKDIR /app
@@ -132,15 +134,16 @@ At this point, your Django app should be running at port 8000 on your Docker hos
 
       COPY package.json ./
       COPY package-lock.json ./
-      RUN npm install --silent
+      
+      RUN npm install --silent     
       RUN npm install react-scripts@3.4.1 -g --silent
       RUN npm install axios classnames --save
+      
       COPY . ./
 
       CMD ["npm", "start"]
-      ```
       
-   ### d) Add a .dockerignore 
+   ### d) Add a .dockerignore:
    
       node_modules
       build
@@ -148,13 +151,12 @@ At this point, your Django app should be running at port 8000 on your Docker hos
       Dockerfile
       Dockerfile.prod
       
-   ### e) Build the Docker image 
+   ### e) Build the Docker image :
    
       $ docker build -t reactdocker:dev .
       
-   ### f) Create a docker-compose.yml file and add
+   ### f) Create a docker-compose.yml file and add:
    
-      ```dockerfile
       version: '3.7'
 
       services:
@@ -171,13 +173,12 @@ At this point, your Django app should be running at port 8000 on your Docker hos
           environment:
             - CHOKIDAR_USEPOLLING=true
           stdin_open: true
-      ```
       
-   ### g) Build the container
+   ### g) Build the container:
    
       $ docker-compose up -d --build
       
-  ### h) Run the container
+  ### h) Run the container:
   
       $ docker-compose up 
       
