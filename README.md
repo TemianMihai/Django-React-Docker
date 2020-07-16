@@ -175,8 +175,6 @@ Open your browser to http://localhost:3001/ and you should see the app. Try maki
       
 That's all! I know it was a long journey but it pays off :+1: 
 
-I had a lot of trouble trying to create the structure of my projects and couldn't really find a specific tutorial for starting a django+postgres+react+docker project.
-
 All this information can be found on:
 - https://docs.docker.com/compose/django/
 - https://mmorejon.io/en/blog/start-django-project-with-docker/
